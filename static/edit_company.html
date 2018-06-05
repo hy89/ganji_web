@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+    <script src="/static/layui/layui.js" charset="utf-8"></script>
+    <script src="/static/js/jquery-1.12.4.min.js"></script>
+
+    <style>
+        .layui-form-label {
+            width: 120px !important;
+        }
+
+        .layui-input-block {
+            margin-left: 120px !important;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-container">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+        <legend>公司信息填写</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane" lay-filter="my_form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">公司名称</label>
+            <div class="layui-input-block">
+                <input type="text" maxlength="60" lay-verify="c_name" name="c_name" autocomplete="off"
+                       placeholder="请输入标题"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">城市</label>
+            <div class="layui-input-inline">
+                <select name="city" id="city">
+                    <option value="郑州">郑州</option>
+                    <option value="开封">开封</option>
+                    <option value="洛阳">洛阳</option>
+                    <option value="平顶山">平顶山</option>
+                    <option value="驻马店">驻马店</option>
+                    <option value="焦作">焦作</option>
+                    <option value="濮阳">濮阳</option>
+                    <option value="漯河">漯河</option>
+                    <option value="济源">济源</option>
+                    <option value="新乡">新乡</option>
+                    <option value="信阳">信阳</option>
+                    <option value="南阳">南阳</option>
+                    <option value="周口">周口</option>
+                    <option value="商丘">商丘</option>
+                    <option value="安阳">安阳</option>
+                    <option value="三门峡">三门峡</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">统一社会代码</label>
+            <div class="layui-input-inline">
+                <input type="text" maxlength="30" lay-verify="social_code" name="social_code" placeholder="请输入"
+                       autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">组织结构代码</label>
+            <div class="layui-input-inline">
+                <input type="text" maxlength="10" name="org_code" lay-verify="org_code" placeholder="请输入"
+                       autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">注册地址</label>
+            <div class="layui-input-block">
+                <input type="text" maxlength="60" lay-verify="reg_detail" name="reg_detail" autocomplete="off"
+                       placeholder="请输入标题"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">公司招聘地址</label>
+            <div class="layui-input-block">
+                <input type="text" maxlength="60" lay-verify="rec_detail" name="rec_detail" autocomplete="off"
+                       placeholder="请输入标题"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">公司电话</label>
+            <div class="layui-input-inline">
+                <input type="text" name="c_tel" placeholder="请输入" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">移动端URL</label>
+            <div class="layui-input-block">
+                <input type="text" name="info_url" lay-verify="url|info_url" autocomplete="off" placeholder="请输入标题"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">PC端URL</label>
+            <div class="layui-input-block">
+                <input type="text" name="pc_url" autocomplete="off" placeholder="请输入标题"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div style="text-align: center">
+                <button class="layui-btn" lay-submit="" lay-filter="submit">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg); //获取url中"?"符后的字符串并正则匹配
+        var context = "";
+        if (r != null)
+            context = r[2];
+        reg = null;
+        r = null;
+        return context == null || context == "" || context == "undefined" ? "" : context;
+    }
+
+    layui.use(['form'], function () {
+        var form = layui.form
+            , layer = layui.layer;
+        var cid = GetQueryString('cid');  // 获取公司cid
+        $.get(
+            url = '/table/company_info/?cid=' + cid,
+            function (data) {  // 数据回显
+                if (data.code === 0) {
+                    form.val("my_form", {
+                        "c_name": data.c_name // "name": "value"
+                        , "city": data.city
+                        , "social_code": data.social_code
+                        , "org_code": data.org_code
+                        , "reg_detail": data.reg_address
+                        , "rec_detail": data.c_address
+                        , "c_tel": data.c_tel
+                        , "info_url": data.info_url
+                        , "pc_url": data.pc_url
+                    });
+                } else if (data.code === 1) {
+                    layer.alert(data.msg)
+                }
+            }
+        );
+        //formTest 即 class="layui-form" 所在元素对应的 lay-filter="" 对应的值
+        //自定义验证规则
+        form.verify({
+            c_name: function (value, item) { //value：表单的值、item：表单的DOM对象
+                if (!new RegExp("^[a-zA-Z\u4e00-\u9fa5][a-zA-Z0-9\u4e00-\u9fa5]*$").test(value)) {
+                    return '公司名只能为数字字母汉字，且不能以数字开头';
+                }
+            }
+            , social_code: [/^[0-9A-Z]{18}$/, '必须是长度为18位数字和大写英文字母']  // 91410100071398255K
+            , org_code: [/^[a-zA-Z0-9]{9}$/, '请重新输入']  // 071398255
+            , reg_detail: [/^[a-zA-Z0-9\u4e00-\u9fa5]{1,60}/, '只能为数字字母及汉字']
+            , rec_detail: [/^[a-zA-Z0-9\u4e00-\u9fa5]{1,60}/, '只能为数字字母及汉字']
+            , info_url: function (value, item) {
+                if (value.length > 80) {
+                    return 'url字符长度不能大于80'
+                }
+            }
+        });
+
+        //监听提交
+        form.on('submit(submit)', function (data) {// 获取cookie中的token
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+            var csrftoken = getCookie('csrftoken');
+
+            function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+
+            // 给ajax请求设置请求头x-csrftoken
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+            // 获取所有form数据，发送到后端
+            data.field.cid = cid;
+            $.ajax({
+                type: 'post',
+                url: '/table/add_company/',
+                data: data.field,
+                dataType: 'json',
+                success: function (data) {
+                    layer.alert(data.msg);
+                    // $('#form_add')[0].reset()
+                }
+            });
+            return false
+        });
+    });
+</script>
+</body>
+</html>
+
+
+
+
+
+
+

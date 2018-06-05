@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+    <script src="/static/layui/layui.js" charset="utf-8"></script>
+    <script src="/static/js/jquery-1.12.4.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            padding: 0 15px;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .set-width {
+            width: 400px;
+        }
+
+        .layui-table-page {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-fluid">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>公司信息展示</legend>
+    </fieldset>
+
+    <div class="demoTable" style="padding-bottom: 20px">
+        <div class="center">
+            <label for="demoReload" style="font-size: 16px">公司名称：</label>
+            <div class="layui-inline">
+                <input class="layui-input set-width" name="id" id="demoReload" autocomplete="off">
+            </div>
+            <button class="layui-btn" style="background-color:#3385ff; width: 100px; font-size: 20px"
+                    data-type="reload">搜索
+            </button>
+        </div>
+    </div>
+
+    <form class="layui-form" style="width: 150px; display: inline-block;">
+        <select name="city" lay-filter="city_" id="city">
+            <option value="">城市</option>
+            <option value="郑州">郑州</option>
+            <option value="开封">开封</option>
+            <option value="洛阳">洛阳</option>
+            <option value="平顶山">平顶山</option>
+            <option value="驻马店">驻马店</option>
+            <option value="焦作">焦作</option>
+            <option value="濮阳">濮阳</option>
+            <option value="漯河">漯河</option>
+            <option value="济源">济源</option>
+            <option value="新乡">新乡</option>
+            <option value="信阳">信阳</option>
+            <option value="南阳">南阳</option>
+            <option value="周口">周口</option>
+            <option value="商丘">商丘</option>
+            <option value="安阳">安阳</option>
+            <option value="三门峡">三门峡</option>
+        </select>
+    </form>
+
+    <button type="button" class="layui-btn layui-btn-sm" style="float: right; margin-right: 80px" data-toggle="modal"
+            data-target=".bs-example-modal-lg">添加公司
+    </button>
+    <!-- Modal -->
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="padding: 20px;">
+                <form class="layui-form layui-form-pane" id="form_add">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">公司名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" maxlength="60" name="c_name" autocomplete="off"
+                                   placeholder="请输入标题"
+                                   class="layui-input" lay-verify="c_name">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">城市</label>
+                        <div class="layui-input-inline">
+                            <select name="city" id="city">
+                                <option value="郑州">郑州</option>
+                                <option value="开封">开封</option>
+                                <option value="洛阳">洛阳</option>
+                                <option value="平顶山">平顶山</option>
+                                <option value="驻马店">驻马店</option>
+                                <option value="焦作">焦作</option>
+                                <option value="濮阳">濮阳</option>
+                                <option value="漯河">漯河</option>
+                                <option value="济源">济源</option>
+                                <option value="新乡">新乡</option>
+                                <option value="信阳">信阳</option>
+                                <option value="南阳">南阳</option>
+                                <option value="周口">周口</option>
+                                <option value="商丘">商丘</option>
+                                <option value="安阳">安阳</option>
+                                <option value="三门峡">三门峡</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">社会代码</label>
+                        <div class="layui-input-inline">
+                            <input type="text" maxlength="30" name="social_code"
+                                   placeholder="请输入"
+                                   autocomplete="off"
+                                   class="layui-input" lay-verify="social_code">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">组织代码</label>
+                        <div class="layui-input-inline">
+                            <input type="text" maxlength="10" name="org_code" placeholder="请输入"
+                                   autocomplete="off"
+                                   class="layui-input" lay-verify="org_code">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">注册地址</label>
+                        <div class="layui-input-inline">
+                            <select name="reg_pro">
+                                <option value="">请选择省</option>
+                                <option value="浙江" selected="">浙江省</option>
+                                <option value="你的工号">江西省</option>
+                                <option value="你最喜欢的老师">福建省</option>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <select name="reg_city">
+                                <option value="">请选择市</option>
+                                <option value="杭州">杭州</option>
+                                <option value="宁波" disabled="">宁波</option>
+                                <option value="温州">温州</option>
+                                <option value="温州">台州</option>
+                                <option value="温州">绍兴</option>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <select name="reg_district">
+                                <option value="">请选择县/区</option>
+                                <option value="西湖区">西湖区</option>
+                                <option value="余杭区">余杭区</option>
+                                <option value="拱墅区">临安市</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">详细地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" maxlength="60" name="reg_detail"
+                                   autocomplete="off"
+                                   placeholder="请输入标题"
+                                   class="layui-input" lay-verify="reg_detail">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">公司地址</label>
+                        <div class="layui-input-inline">
+                            <select name="rec_pro">
+                                <option value="">请选择省</option>
+                                <option value="浙江" selected="">浙江省</option>
+                                <option value="你的工号">江西省</option>
+                                <option value="你最喜欢的老师">福建省</option>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <select name="rec_city">
+                                <option value="">请选择市</option>
+                                <option value="杭州">杭州</option>
+                                <option value="宁波" disabled="">宁波</option>
+                                <option value="温州">温州</option>
+                                <option value="温州">台州</option>
+                                <option value="温州">绍兴</option>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <select name="rec_district">
+                                <option value="">请选择县/区</option>
+                                <option value="西湖区">西湖区</option>
+                                <option value="余杭区">余杭区</option>
+                                <option value="拱墅区">临安市</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">详细地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" maxlength="60" name="rec_detail"
+                                   autocomplete="off"
+                                   placeholder="请输入标题"
+                                   class="layui-input" lay-verify="rec_detail">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">公司电话</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="c_tel" placeholder="请输入" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">移动端URL</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="info_url" autocomplete="off"
+                                   placeholder="请输入标题"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">PC端URL</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="pc_url" autocomplete="off" placeholder="请输入标题"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div style="text-align: center">
+                            <button type="button" class="btn btn-primary" lay-submit="" id="add" lay-filter="submit">
+                                提交
+                            </button>
+                            <button type="reset" class="btn btn-warning">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+</div>
+<script type="text/html" id="nameTpl">
+    {{#  if(d.info_url !== null){ }}
+    <a href="{{ d.info_url }}" class="layui-table-link" target="_blank">{{ d.c_name }}</a>
+    {{#  } else { }}
+    {{ d.c_name }}
+    {{#  } }}
+</script>
+<script type="text/html" id="infoTpl">
+    {{#  if(d.info_url !== null){ }}
+    <a href="{{ d.info_url }}" class="layui-table-link" target="_blank">查看详情</a>
+    {{#  } else { }}
+    {{ '暂无' }}
+    {{#  } }}
+</script>
+<script type="text/html" id="pcTpl">
+    {{#  if(d.pc_url !== null){ }}
+    <a href="{{ d.pc_url }}" class="layui-table-link" target="_blank">查看详情</a>
+    {{#  } else { }}
+    {{ '暂无' }}
+    {{#  } }}
+</script>
+<script>
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+
+        var form = layui.form;
+        var layer = layui.layer;
+
+        //自定义验证规则
+        form.verify({
+            c_name: function (value, item) { //value：表单的值、item：表单的DOM对象
+                if (!new RegExp("^[a-zA-Z\u4e00-\u9fa5][a-zA-Z0-9\u4e00-\u9fa5]*$").test(value)) {
+                    return '公司名只能为数字字母汉字，且不能以数字开头';
+                }
+            }
+            , social_code: [/^[0-9A-Z]{18}$/, '必须是长度为18位数字和大写英文字母']  // 91410100071398255K
+            , org_code: [/^[a-zA-Z0-9]{9}$/, '请重新输入']  // 071398255
+            , reg_detail: [/^[a-zA-Z0-9\u4e00-\u9fa5]{1,60}/, '只能为数字字母及汉字']
+            , rec_detail: [/^[a-zA-Z0-9\u4e00-\u9fa5]{1,60}/, '只能为数字字母及汉字']
+            , info_url: function (value, item) {
+                if (value.length > 80) {
+                    return 'url字符长度不能大于80'
+                }
+            }
+        });
+
+        $.get(  // 用来获取token
+            url = '/table/get_token/'
+        );
+        //监听提交
+        form.on('submit(submit)', function (data) {
+            // 获取cookie中的token
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+            var csrftoken = getCookie('csrftoken');
+
+            function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+
+            // 给ajax请求设置请求头x-csrftoken
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+
+            // 获取所有form数据，发送到后端
+            $.ajax({
+                type: 'post',
+                url: '/table/add_company/',
+                data: data.field,
+                dataType: 'json',
+                success: function (data) {
+                    layer.alert(data.msg);
+                    // 清空表单，注意0不能少。
+                    $('#form_add')[0].reset()
+                }
+            });
+            return false
+        });
+
+
+        // 依据城市来请求数据，重新刷新表格。
+        form.on('select(city_)', function (data) {
+            table.reload('testReload', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+                , where: {
+                    city: data.value
+                }
+            });
+        });
+        // 请求表格数据，包括重载表格也是此方法
+        table.render({
+            elem: '#test'
+            , url: '/table/company/'
+            , limit: 15
+            , cols: [[ //表头
+                {field: 'id', title: '编号', width: 70, sort: true}
+                , {field: 'c_name', title: '公司名称', templet: '#nameTpl', width: 120}
+                , {field: 'city', title: '城市', width: 80}
+                , {field: 'social_code', title: '统一社会代码', width: 150}
+                , {field: 'org_code', title: '组织机构代码', width: 150}
+                , {field: 'reg_address', title: '注册地址	', width: 150}
+                , {field: 'c_address', title: '公司地址', width: 150}
+                , {field: 'c_tel', title: '公司电话', width: 100}
+                , {field: 'info_url', title: '移动端信息来源', templet: '#infoTpl', width: 140}
+                , {field: 'pc_url', title: 'PC端信息来源', templet: '#pcTpl', width: 130}
+                // , {field: 'operate', title: '操作', width: 135, sort: true}
+                , {width: 207, align: 'center', toolbar: '#barDemo', templet: '#barDemo'}
+            ]]
+            , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['prev', 'page', 'next', 'skip', 'count'] //自定义分页布局
+                , curr: 1 //设定初始在第 5 页
+                , groups: 5 //只显示 1 个连续页码
+                , first: '首页' //不显示首页
+                , last: '尾页' //不显示尾页
+                , limits: [15, 20, 30, 40, 50]
+
+            }
+            , id: 'testReload'
+        });
+        // 为搜索准备
+        var active = {
+            reload: function () {
+                var demoReload = $('#demoReload');
+                //执行重载
+                table.reload('testReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , where: {
+                        keyword: demoReload.val()
+                    }
+                });
+            }
+        };
+
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        //监听工具条
+        table.on('tool(test)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            // var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+            if (layEvent === 'detail') {
+                // 展示公司招聘信息
+                window.open('/static/recruit.html?cid=' + data.cid)
+            } else if (layEvent === 'del') { //删除
+                layer.confirm('真的删除行么', function (index) {
+                    //向服务端发送删除指令
+                    $.get(
+                        url = '/table/delete_c/?cid=' + data.cid,
+                        function (data) {
+                            if (data.code === 0) {
+                                layer.alert(data.msg);
+                                obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                                layer.close(index);
+                            } else {
+                                layer.alert(data.msg)
+                            }
+                        }
+                    )
+                });
+            } else if (layEvent === 'edit') {
+                // 编辑已有公司的信息，将这个公司的cid作为参数传过去
+                window.open('/static/edit_company.html?cid=' + data.cid)
+            } else if (layEvent === 'add_j') {
+                // 公司添加招聘信息
+                window.open('/static/add_job.html?cid=' + data.cid)
+            }
+        });
+    });
+</script>
+<script type="text/html" id="barDemo">
+    {{#  if(d.recruit){ }}
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">招聘信息</a>
+    {{#  } else { }}
+    <span class="layui-btn layui-btn-primary layui-btn-xs">无招聘</span>
+    {{#  } }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="add_j"><i class="layui-icon"></i></a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i> </a>
+</script>
+</body>
+</html>

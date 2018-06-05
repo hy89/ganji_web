@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+
+    <script>
+
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg); //获取url中"?"符后的字符串并正则匹配
+            var context = "";
+            if (r != null)
+                context = r[2];
+            reg = null;
+            r = null;
+            return context == null || context == "" || context == "undefined" ? "" : context;
+        }
+
+    </script>
+</head>
+<body>
+<div class="layui-fluid">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>招聘信息展示</legend>
+    </fieldset>
+
+
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+
+</div>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+
+
+<script type="text/html" id="jobTpl">
+    {{#  if(d.pc_url !== null){ }}
+    <a href="{{ d.job_url }}" class="layui-table-link" target="_blank">查看详情</a>
+    {{#  } else { }}
+    {{ '暂无' }}
+    {{#  } }}
+</script>
+<script>
+    cid = GetQueryString('cid');
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            elem: '#test'
+            , url: '/table/recruit/?cid=' + cid
+            , limit: 10
+            , cols: [[ //表头
+                {field: 'b_id', title: '编号', width: 70, sort: true, fixed: 'left'}
+                , {field: 'job_name', title: '职位名称', width: 200}
+                , {field: 'job_address', title: '职位地址', width: 200}
+                , {field: 'salary', title: '工资', sort: true}
+                , {field: 'recruit_num', title: '招聘人数', width: 100, sort: true}
+                , {field: 'edu', title: '学历	'}
+                , {field: 'update_time', title: '更新时间', sort: true}
+                , {field: 'contact_person', title: '联系人'}
+                , {field: 'job_tel', title: '联系电话'}
+                , {field: 'job_url', title: '职位链接', templet: '#jobTpl'}
+                // , {field: 'operate', title: '操作', width: 135, sort: true}
+                , {fixed: 'right', width: 150, align: 'center', toolbar: '#barDemo'}
+            ]]
+            , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                , curr: 1 //设定初始在第 1 页
+                , groups: 5 //只显示 5 个连续页码
+                , first: '首页' //不显示首页
+                , last: '尾页' //不显示尾页
+                //  , limits: [15, 20, 30, 40, 50]
+
+            }
+
+        });
+        var $ = layui.$;
+        //监听工具条
+        table.on('tool(test)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+            if (layEvent === 'detail') { //查看
+                return false
+            } else if (layEvent === 'del') { //删除
+                layer.confirm('真的删除行么', function (index) {
+                    $.get(
+                        url = '/table/delete_j/?id=' + data.id,
+                        function (data) {
+                            if (data.code === 0) {
+                                layer.alert(data.msg);
+                                obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                                layer.close(index);
+                            } else {
+                                layer.alert(data.msg)
+                            }
+                        }
+                    )
+                });
+            } else if (layEvent === 'edit') { //编辑
+                //do something
+
+                //同步更新缓存对应的值
+                obj.update({
+                    username: '123'
+                    , title: 'xxx'
+                });
+            }
+        });
+    });
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+</body>
+</html>
